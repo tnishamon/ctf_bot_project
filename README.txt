@@ -13,4 +13,8 @@ Reach out to the lead developer and GitHub manager (me, tnishamon) to get Discor
 4. Run and develop on python venv to keep things consistent (we are using Python3.9.5) with source myenv/bin/activate (this will be created with install.sh)
     -deactivate will exit venv
 
-5. Have fun! 
+5. I would recommend creating your own .env file and getting the token secret from me. Format for the file should just simply be:
+    > DISCORD_BOT_TOKEN="token here"
+
+6. Have fun! 
+
