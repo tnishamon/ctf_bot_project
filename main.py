@@ -1,6 +1,7 @@
 import discord 
 from os import environ
 from dotenv import load_dotenv
+import sqlite3 
 
 load_dotenv()
 # Token from .env
