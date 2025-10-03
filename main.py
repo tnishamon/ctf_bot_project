@@ -5,9 +5,7 @@ import os
 from dotenv import load_dotenv
 import sqlite3 
 import requests 
-import time
-import datetime
-import pandas as pd
+import stampTime as ts
 
 load_dotenv()
 # Token from .env
@@ -34,30 +32,25 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 # Command on client
 @bot.command(guild = GUILD_ID)
 async def test(ctx):
-    # This is so gross, someone please refactor this shit
-    initalize = datetime.datetime.now()
-    ts = pd.Timestamp(initalize)
-    start = ts.round(freq='d')
-    end = start + datetime.timedelta(days=14)
-    ts2 = pd.Timestamp(end)
-    end2 = ts2.round(freq='h')
-    start = int(start.timestamp())
-    end3 = int(end2.timestamp())
-    
+    # Invoke custom class to get timestamps (I cleaned that ugly garbage up)
+    x = ts.stampTime()
+    # Get start time and end time in epoch time (returns as int)
+    start = x.startTimeStamp(x.saveStart)
+    end = x.endTimeStamp(x.saveStart, 28)
     # API request
-    response = requests.get('https://ctftime.org/api/v1/events/?limit=30&start=' + str(start) + '&finish=' + str(end3))
+    response = requests.get('https://ctftime.org/api/v1/events/?limit=30&start=' + str(start) + '&finish=' + str(end))
     if response.status_code == 200:
         data = response.json()
-        await ctx.channel.send('CTFs in next two weeks: \n')
+        await ctx.channel.send('CTFs in next month: \n')
         
         # Get data from json
         for i in data:
             await ctx.channel.send('Name: ' + i['title'] + '\n' +
                              'Date: ' + i['start'] + '\n' +
-                             'Description: ' + i['description'] + '\n' +
-                             'Link: ' + i['url'])
-            
+                             'Link: ' + i['url'] + '\n')
+           
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
+
 # Run client (our bot) 
 bot.run(token)
