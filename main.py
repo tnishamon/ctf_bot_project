@@ -31,7 +31,9 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 # Command on client
 @bot.command(guild = GUILD_ID)
-async def test(ctx):
+
+# I might actually keep this as it's own command rather than having it run concurrently? 
+async def upcoming(ctx):
     # Invoke custom class to get timestamps (I cleaned that ugly garbage up)
     x = ts.stampTime()
     # Get start time and end time in epoch time (returns as int)
