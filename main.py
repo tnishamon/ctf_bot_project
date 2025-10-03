@@ -47,7 +47,7 @@ async def test(ctx):
         for i in data:
             await ctx.channel.send('Name: ' + i['title'] + '\n' +
                              'Date: ' + i['start'] + '\n' +
-                             'Link: ' + i['url'] + '\n')
+                             'Link: <' + i['url'] + '>' + '\n')
            
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
