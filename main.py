@@ -3,14 +3,21 @@ from discord.ext import commands
 from os import environ
 import os
 from dotenv import load_dotenv
-import sqlite3 
 import requests 
 import stampTime as ts
 
 load_dotenv()
 # Token from .env
 token=environ["DISCORD_BOT_TOKEN"]
+
+# Global Guild ID
 GUILD_ID = discord.Object(id=1391665916194066483)
+
+# Declares our discord intent, which Discord needs specified. 
+intents = discord.Intents.default()
+intents.message_content = True
+# Intialie client with intents
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 # Class for discord events, will need to refactor later
 class Client(discord.Client):
@@ -23,16 +30,8 @@ class Client(discord.Client):
         except Exception as e:
             print('Error')
         
-# Declares our discord intent, which Discord needs specified. 
-intents = discord.Intents.default()
-intents.message_content = True
-# Intialie client with intents
-bot = commands.Bot(command_prefix='!', intents=intents)
-
-# Command on client
+# Command for upcoming
 @bot.command(guild = GUILD_ID)
-
-# I might actually keep this as it's own command rather than having it run concurrently? 
 async def upcoming(ctx):
     # Invoke custom class to get timestamps (I cleaned that ugly garbage up)
     x = ts.stampTime()
