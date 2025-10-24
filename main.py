@@ -62,7 +62,7 @@ async def upcoming(ctx):
         # This is a temporary stop-gap as there is a 2000 char limit on messages
         with open("result.txt", "rb") as file:
             await ctx.send('CTFs in next month: ', file=discord.File(file, "result.txt"))
-            # Working directory does not need to keep this file. 
+            # Working directory does not need to keep this file.
             os.unlink('result.txt')
     # Error
     else:
