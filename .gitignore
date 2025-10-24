@@ -3,3 +3,4 @@
 /__pycache__
 /.pytest_cache
 bot_db.db
+result.txt

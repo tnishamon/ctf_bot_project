@@ -57,7 +57,13 @@ async def upcoming(ctx):
             # Add to string
             runningStr = runningStr + '\nName: ' + i.name + '\n' + 'Date: ' + i.date + '\n' + 'URL: ' + i.link + '\n'
         # Send string of data all together as one message
-        await ctx.channel.send(runningStr)
+        with open("result.txt", "w") as file: 
+            file.write(runningStr)
+        # This is a temporary stop-gap as there is a 2000 char limit on messages
+        with open("result.txt", "rb") as file:
+            await ctx.send('CTFs in next month: ', file=discord.File(file, "result.txt"))
+            # Working directory does not need to keep this file. 
+            os.unlink('result.txt')
     # Error
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
