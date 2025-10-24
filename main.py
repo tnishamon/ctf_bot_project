@@ -41,15 +41,24 @@ async def upcoming(ctx):
     # API request
     response = requests.get('https://ctftime.org/api/v1/events/?limit=30&start=' + str(start) + '&finish=' + str(end))
     if response.status_code == 200:
+        # Store data from API into JSON var
         data = response.json()
+        # Print values in one string instead of spamming messages
+        runningStr = ''
+        # Empty list init
+        l = []
         await ctx.channel.send('CTFs in next month: \n')
-        
         # Get data from json
+        # TODO: Maybe combine into one for loop? I kinda like having the list idk
         for i in data:
-            await ctx.channel.send('Name: ' + i['title'] + '\n' +
-                             'Date: ' + i['start'] + '\n' +
-                             'Link: <' + i['url'] + '>' + '\n')
-           
+            # Add to list
+            l.append(ts.ctfClass(i['title'], i['start'], i['url']))
+        for i in l:
+            # Add to string
+            runningStr = runningStr + '\nName: ' + i.name + '\n' + 'Date: ' + i.date + '\n' + 'URL: ' + i.link + '\n'
+        # Send string of data all together as one message
+        await ctx.channel.send(runningStr)
+    # Error
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
 
