@@ -45,17 +45,11 @@ async def upcoming(ctx):
         data = response.json()
         # Print values in one string instead of spamming messages
         runningStr = ''
-        # Empty list init
-        l = []
-        await ctx.channel.send('CTFs in next month: \n')
         # Get data from json
         # TODO: Maybe combine into one for loop? I kinda like having the list idk
         for i in data:
             # Add to list
-            l.append(ts.ctfClass(i['title'], i['start'], i['url']))
-        for i in l:
-            # Add to string
-            runningStr = runningStr + '\nName: ' + i.name + '\n' + 'Date: ' + i.date + '\n' + 'URL: ' + i.link + '\n'
+            runningStr = runningStr + '\nName: ' + i['title'] + '\n' + 'Date: ' + i['start'] + '\n' + 'URL: ' + i['url'] + '\n'
         # Send string of data all together as one message
         with open("result.txt", "w") as file: 
             file.write(runningStr)
