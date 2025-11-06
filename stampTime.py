@@ -1,14 +1,7 @@
 import time
 import datetime
 import pandas as pd
-from dataclasses import dataclass
 from typing import List
-
-@dataclass
-class ctfClass:
-    name: str
-    date: str
-    link: str
 
 class stampTime:
 

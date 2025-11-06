@@ -1,9 +1,9 @@
-import discord 
+import discord
 from discord.ext import commands
 from os import environ
 import os
 from dotenv import load_dotenv
-import requests 
+import requests
 import stampTime as ts
 
 load_dotenv()
@@ -12,8 +12,7 @@ token=environ["DISCORD_BOT_TOKEN"]
 
 # Global Guild ID
 GUILD_ID = discord.Object(id=1391665916194066483)
-
-# Declares our discord intent, which Discord needs specified. 
+# Declares our discord intent, which Discord needs specified.
 intents = discord.Intents.default()
 intents.message_content = True
 # Intialie client with intents
@@ -24,12 +23,11 @@ class Client(discord.Client):
     # Initialie bot for client and for specific Guild
     async def on_ready(self):
         print('Testing print :)')
-        
         try:
             synced = await self.tree.sync(guild=GUILD_ID)
         except Exception as e:
             print('Error')
-        
+
 # Command for upcoming
 @bot.command(guild = GUILD_ID)
 async def upcoming(ctx):
@@ -39,20 +37,22 @@ async def upcoming(ctx):
     start = x.startTimeStamp(x.saveStart)
     end = x.endTimeStamp(x.saveStart, 28)
     # API request
-    response = requests.get('https://ctftime.org/api/v1/events/?limit=30&start=' + str(start) + '&finish=' + str(end))
+    response = requests.get('https://ctftime.org/api/v1/events/?limit=30&start='
++ str(start) + '&finish=' + str(end))
     if response.status_code == 200:
         # Store data from API into JSON var
         data = response.json()
         # Print values in one string instead of spamming messages
-        runningStr = ''
+        runningstr = ''
         # Get data from json
-        # TODO: Maybe combine into one for loop? I kinda like having the list idk
+        # TODO Turn this into >>> blocks? I might create some methodology to format this better in markdown and the file solution still kinda sucks
         for i in data:
             # Add to list
-            runningStr = runningStr + '\nName: ' + i['title'] + '\n' + 'Date: ' + i['start'] + '\n' + 'URL: ' + i['url'] + '\n'
+            runningstr = runningstr + '\nName: ' + i['title']
+            + '\n' + 'Date: ' + i['start'] + '\n' + 'URL: ' + i['url'] + '\n'
         # Send string of data all together as one message
-        with open("result.txt", "w") as file: 
-            file.write(runningStr)
+        with open("result.txt", "w") as file:
+            file.write(runningstr)
         # This is a temporary stop-gap as there is a 2000 char limit on messages
         with open("result.txt", "rb") as file:
             await ctx.send('CTFs in next month: ', file=discord.File(file, "result.txt"))
@@ -62,5 +62,5 @@ async def upcoming(ctx):
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
 
-# Run client (our bot) 
+# Run client (our bot)
 bot.run(token)
