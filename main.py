@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import stampTime as ts
+import database as db
 
 load_dotenv()
 # Token from .env
@@ -47,11 +48,15 @@ async def upcoming(ctx):
         # TODO: Maybe combine into one for loop? I kinda like having the list idk
         for i in data:
             # Add to list
-            await ctx.send('>>>'+ '\nName: ' + i['title']
-            + '\n' + 'Date: ' + i['start'] + '\n' + 'URL: ' + i['url'] + '\n')
+            await ctx.send('>>> '+ '\nName: ' + i['title']
+            + '\n' + 'Date: ' + i['start'] + '\n' + 'URL: <' + i['url'] + '>\n')
     # Error
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
 
+@bot.command(guild = GUILD_ID)
+async def get_tools(ctx, tool_name):
+    tools = db.get_tools(tool_name)
+    await ctx.send(tools)
 # Run client (our bot)
 bot.run(token)

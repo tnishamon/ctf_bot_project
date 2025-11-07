@@ -4,9 +4,7 @@ def init_db():
     conn = sqlite3.connect('bot_db.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS ctf_tools
-                 (id TEXT PRIMARY KEY, name TEXT, url TEXT)''')
-    c.execute('''CREATE TABLE IF NOT EXISTS categories
-                 (id TEXT PRIMARY KEY, category TEXT)''')
+                 (category TEXT, name TEXT PRIMARY KEY, url TEXT)''')
     conn.commit()
     conn.close()
 
@@ -17,17 +15,17 @@ def del_db():
     conn.commit()
     conn.close()
 
-def add_tool(tool_category, name, url):
+def add_tool(category, name, url):
     conn = sqlite3.connect('bot_db.db')
     c = conn.cursor()
-    c.execute("INSERT INTO ctf_tools (tool_category, name, url) VALUES (?, ?, ?)", (tool_category, name, url))
+    c.execute("INSERT INTO ctf_tools (category, name, url) VALUES (?, ?, ?)", (category, name, url))
     conn.commit()
     conn.close()
 
-def get_useur(tool_category):
+def get_tools(category):
     conn = sqlite3.connect('bot_db.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM ctf_tools WHERE tool_category = ?", (tool_category,))
+    c.execute("SELECT * FROM ctf_tools WHERE category = ?", (category,))
     tools = c.fetchall()
     conn.close()
-    return tools
+    return tools 
