@@ -43,21 +43,12 @@ async def upcoming(ctx):
         # Store data from API into JSON var
         data = response.json()
         # Print values in one string instead of spamming messages
-        runningstr = ''
         # Get data from json
-        # TODO Turn this into >>> blocks? I might create some methodology to format this better in markdown and the file solution still kinda sucks
+        # TODO: Maybe combine into one for loop? I kinda like having the list idk
         for i in data:
             # Add to list
-            runningstr = runningstr + '\nName: ' + i['title']
-            + '\n' + 'Date: ' + i['start'] + '\n' + 'URL: ' + i['url'] + '\n'
-        # Send string of data all together as one message
-        with open("result.txt", "w") as file:
-            file.write(runningstr)
-        # This is a temporary stop-gap as there is a 2000 char limit on messages
-        with open("result.txt", "rb") as file:
-            await ctx.send('CTFs in next month: ', file=discord.File(file, "result.txt"))
-            # Working directory does not need to keep this file.
-            os.unlink('result.txt')
+            await ctx.send('>>>'+ '\nName: ' + i['title']
+            + '\n' + 'Date: ' + i['start'] + '\n' + 'URL: ' + i['url'] + '\n')
     # Error
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
