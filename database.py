@@ -4,7 +4,7 @@ def init_db():
     conn = sqlite3.connect('bot_db.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS ctf_tools
-                 (category TEXT, name TEXT PRIMARY KEY, url TEXT)''')
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, name TEXT, url TEXT)''')
     conn.commit()
     conn.close()
 
