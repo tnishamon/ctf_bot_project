@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import requests
 import stampTime as ts
 import database as db
+import re
 
 load_dotenv()
 # Token from .env
@@ -54,9 +55,23 @@ async def upcoming(ctx):
     else:
         await ctx.channel.send('Sorry, bub, no get request for you')
 
+# Get list of tools by category via a command
 @bot.command(guild = GUILD_ID)
-async def get_tools(ctx, tool_name):
-    tools = db.get_tools(tool_name)
-    await ctx.send(tools)
+async def get_tools(ctx, category):
+    # Retrieve tools
+    tools = db.get_tools(category)
+    # Grab all tools in the list in their tuples
+    for tool in tools:
+        await ctx.send(tool[2] + ' ' + tool[3])
+
+# Add any new tools to the database. I may give her a secret word to make sure no one passes crazy shit.
+# I made this sick regex to only pass valid URLs
+@bot.command(guild = GUILD_ID)
+async def add_tools(ctx, category, name, url):
+    # Regex to only grab valid URLs to be passed
+    regex = re.compile('(https://)?(www.)?(.)+(..{2,3})(/.)*')
+    # If regex matches, we can add the tool
+    if(regex.match(url)):
+        db.add_tool(category, name, url)
 # Run client (our bot)
 bot.run(token)
